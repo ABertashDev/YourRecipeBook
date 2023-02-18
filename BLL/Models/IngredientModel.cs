@@ -13,5 +13,21 @@ namespace BLL.Models
 
         public ICollection<int> RecipeDetailIds { get; set; }
 
+
+        public bool IsValid(out string message)
+        {
+
+            bool isValid = true;
+            message = "";
+
+            if (string.IsNullOrEmpty(Name))
+            {
+                message = $"Ingredient model with empty name!";
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
     }
 }
