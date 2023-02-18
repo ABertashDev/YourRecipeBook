@@ -8,7 +8,7 @@ namespace DAL.Entities
 
         public string Name { get; set; }
         public string Description { get; set; }
-        public string CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
         public RecipeCategory Category { get; set; }
         public ICollection<RecipeDetail> RecipeDetails { get; set; }
