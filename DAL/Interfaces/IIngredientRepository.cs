@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Interfaces
 {
-    internal interface IIngredientRepository : IRepository<Ingredient>
+    public interface IIngredientRepository : IRepository<Ingredient>
     {
 
         Task<Ingredient> GetByNameAsync(string name);

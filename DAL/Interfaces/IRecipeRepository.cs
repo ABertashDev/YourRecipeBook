@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Interfaces
 {
-    internal interface IRecipeRepository : IRepository<Recipe>
+    public interface IRecipeRepository : IRepository<Recipe>
     {
 
         Task<IEnumerable<Recipe>> GetAllWithDetailsAsync();

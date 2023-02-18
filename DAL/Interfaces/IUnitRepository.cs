@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Interfaces
 {
-    internal interface IUnitRepository : IRepository<Unit>
+    public interface IUnitRepository : IRepository<Unit>
     {
 
         Task<Unit> GetByName(string name);

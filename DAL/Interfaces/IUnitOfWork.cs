@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Interfaces
 {
-    internal interface IUnitOfWork
+    public interface IUnitOfWork
     {
 
         ICookingStepRepository CookingStepRepository { get; }

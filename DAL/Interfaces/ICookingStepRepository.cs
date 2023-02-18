@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Interfaces
 {
-    internal interface ICookingStepRepository : IRepository<CookingStep>
+    public interface ICookingStepRepository : IRepository<CookingStep>
     {
     }
 }

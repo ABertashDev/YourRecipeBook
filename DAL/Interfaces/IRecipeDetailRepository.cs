@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Interfaces
 {
-    internal interface IRecipeDetailRepository : IRepository<RecipeDetail>
+    public interface IRecipeDetailRepository : IRepository<RecipeDetail>
     {
     }
 }
