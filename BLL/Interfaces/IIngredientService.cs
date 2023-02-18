@@ -9,5 +9,7 @@ namespace BLL.Interfaces
 {
     public interface IIngredientService : ICrud<IngredientModel>
     {
+
+
     }
 }
