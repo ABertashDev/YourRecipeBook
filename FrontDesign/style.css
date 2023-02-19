@@ -1,0 +1,15 @@
+/*
+font-family: 'Allura', cursive;
+font-family: 'Comfortaa', cursive;
+*/
+
+/*********************** 
+Main page 
+************************/
+
+body.bg {
+    background-image: url("images/bg-main-dark.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: black;
+}
