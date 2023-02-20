@@ -171,13 +171,13 @@ body.common header nav {
     width: 150px;
     height: 100%;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
     margin-right: 150px;
     border: 1px solid transparent;
     transition: all .2s ease-out;
 }
 
-body.common header .burger {
+body.common header nav .burger {
     width: 25px;
     height: 25px;
     background-image: url(images/menu.svg);
@@ -188,9 +188,10 @@ body.common header .burger {
     border: none;
 }
 
-body.common header a {
+body.common header nav a {
     font-size: 20px;
     line-height: 80px;
+    padding-left: 20px;
 }
 
 body.common header h2 {
