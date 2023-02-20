@@ -71,6 +71,8 @@ body.bg nav .nav-item {
 body.bg nav a {
     color: var(--color-light);
     padding-left: 20px;
+    line-height: 70px;
+    width: 380px;
 }
 
 body.bg nav img {
@@ -188,6 +190,7 @@ body.common header .burger {
 
 body.common header a {
     font-size: 20px;
+    line-height: 80px;
 }
 
 body.common header h2 {
