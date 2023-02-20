@@ -4,7 +4,38 @@ font-family: 'Comfortaa', cursive;
 */
 
 /*********************** 
-Main page 
+COMMON 
+************************/
+
+:root {
+    --font-family-logo: 'Allura', cursive;
+    --font-family-main: 'Comfortaa', cursive;
+    --color-light: #F2F2F2;
+    --color-dark: #4E4E4E;
+    --color-grey: #7B7B7B;
+    --color-red: #A40000;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family-main);
+    color: var(--color-dark);
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-dark);
+}
+
+
+
+/*********************** 
+Main page - start
 ************************/
 
 body.bg {
@@ -12,4 +43,102 @@ body.bg {
     background-size: cover;
     background-repeat: no-repeat;
     background-color: black;
+    display: flex;
+    justify-content: flex-end;
+    min-height: 900px;
 }
+
+
+/* Left side - start */
+
+body.bg nav {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 30px;
+    margin-right: 30px;
+}
+
+body.bg nav .nav-item {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    border: 2px solid transparent;
+    transition: all .2s ease-out;
+}
+
+body.bg nav a {
+    color: var(--color-light);
+    padding-left: 30px;
+}
+
+body.bg nav img {
+    width: 85px;
+    height: 85px;
+    padding: 10px;
+}
+
+body.bg nav .nav-item:hover {
+    border: 2px solid var(--color-red);
+    transition: all .2s ease-out;
+}
+
+/* Left side - end */
+
+
+/* Center side - start */
+
+body.bg header {
+    width: 350px;
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;}
+
+body.bg header img {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+body.bg header button {
+    width: 130px;
+    height: 50px;
+    margin-top: 30px;
+    font-size: 20px;
+    transition: all .2s ease-out;
+}
+
+body.bg header button.login {
+    background-color: transparent;
+    border: 1px solid var(--color-light);
+    color: var(--color-light);
+}
+
+body.bg header button.register {
+    border: none;
+    background-color: var(--color-light);
+    color: var(--color-dark);
+}
+
+body.bg header button:hover {
+    cursor: pointer;
+    border: 1px solid var(--color-red);
+    color: var(--color-red);
+    transition: all .2s ease-out;
+}
+
+/* Center side - end */
+
+
+/* Right side - start */
+
+body.bg .bg-picture-right {
+    width: 40%;
+}
+
+/* Right side - end */
+
+/*********************** 
+Main page - end
+************************/
