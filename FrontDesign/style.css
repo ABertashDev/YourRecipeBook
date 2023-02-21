@@ -1,7 +1,3 @@
-/*
-font-family: 'Allura', cursive;
-font-family: 'Comfortaa', cursive;
-*/
 
 /*********************** 
 COMMON 
@@ -250,13 +246,52 @@ body.common main .dishes {
     width: 1280px;
     margin-top: 180px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
+    padding: 0 40px;
 }
 
-
+body.common main .dishes .dish {
+    width: 240px;
+    height: 325px;
+    margin: 0 30px 40px;
+    transition: all .2s ease-out;
+    margin-top: 10px;
+}
+ 
+body.common main .dishes div {
+    height: 250px;
+    overflow: hidden;
+    position: relative;
+    z-index: -100;
+}
+ 
+body.common main .dishes .dish img {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    height: 100%;
+    width: auto;
+    transform: translate(-50%, -50%);
+}
+ 
+body.common main .dishes .dish h3 {
+    height: 75px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-light);
+    text-align: center;
+    padding: 0 10px;
+}
+ 
+body.common main .dishes .dish:hover {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    transition: all .2s ease-out;
+}
+ 
 /* Main side - end */
-
 
 /*********************** 
 Other pages - end
