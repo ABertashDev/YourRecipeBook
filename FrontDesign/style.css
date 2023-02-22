@@ -224,14 +224,16 @@ body.common header .auth a:hover {
 /* Header - end */
 
 
-/* Main side - start */
+/* Categories main side - start */
 
 body.common main {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
-body.common main h1 {
+body.common main .head {
     width: 100%;
     height: 100px;
     line-height: 100px;
@@ -291,7 +293,65 @@ body.common main .dishes .dish:hover {
     transition: all .2s ease-out;
 }
  
-/* Main side - end */
+/* Categories main side - end */
+
+
+/* Recipe main side - start */
+
+body.common main section {
+    width: 1080px;
+    align-items: center;
+    justify-content: space-between;    
+    font-size: 20px;
+    line-height: 30px;
+   
+}
+
+body.common main .description {
+    min-height: 450px;
+    display: flex;
+    align-items: flex-start;
+    margin-top: 120px;}
+
+body.common main .description .text-container {
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+}
+
+body.common main .description .text-container h1 {
+    width: 100%;
+    height: 100px;
+    line-height: 100px;
+    font-size: 36px;
+    text-align: center;
+}
+
+body.common main .description .text-container ul {
+    list-style-position: inside;
+}
+
+body.common main .description .img-container {
+    width: 450px;
+    height: 450px;
+    border-radius: 50px;
+    overflow: hidden;
+    position: relative;
+    z-index: -100;
+}
+
+body.common main .description .img-container img {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    height: 100%;
+    width: auto;
+    transform: translate(-50%, -50%);
+}
+
+
+
+/* Recipe main side - end */
 
 /*********************** 
 Other pages - end
