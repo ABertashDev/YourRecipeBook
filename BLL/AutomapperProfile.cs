@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BLL.Models;
 using DAL.Entities;
-using System.Linq;
 
 namespace BLL
 {
@@ -15,15 +14,14 @@ namespace BLL
                 .ForMember(rm => rm.Description, r => r.MapFrom(x => x.Description))
                 .ForMember(rm => rm.CategoryId, r => r.MapFrom(x => x.CategoryId))
                 .ForMember(rm => rm.CategoryName, r => r.MapFrom(x => x.Category.Name))
-                .ForMember(rm => rm.RecipeDetailIds, r => r.MapFrom(x => x.RecipeDetails.Select(rd => rd.Id)))
-                .ForMember(rm => rm.CookingStepIds, r => r.MapFrom(x => x.CookingSteps.Select(rd => rd.Id)))
+                .ForMember(rm => rm.RecipeDetails, r => r.MapFrom(x => x.RecipeDetails.Where(rd => !rd.IsDeleted)))
                 .ReverseMap();
 
             CreateMap<RecipeCategory, RecipeCategoryModel>()
                 .ForMember(rcm => rcm.Id, rc => rc.MapFrom(x => x.Id))
                 .ForMember(rcm => rcm.Name, rc => rc.MapFrom(x => x.Name))
                 .ForMember(rcm => rcm.SortOrder, rc => rc.MapFrom(x => x.SortOrder))
-                .ForMember(rcm => rcm.RecipeIds, rc => rc.MapFrom(x => x.Recipes.Select(rd => rd.Id)))
+                .ForMember(rcm => rcm.Recipes, rc => rc.MapFrom(x => x.Recipes.Where(rc => !rc.IsDeleted)))
                 .ReverseMap();
 
             CreateMap<RecipeDetail, RecipeDetailModel>()
@@ -51,16 +49,13 @@ namespace BLL
                 .ForMember(im => im.Description, i => i.MapFrom(x => x.Id))
                 .ForMember(im => im.UnitId, i => i.MapFrom(x => x.Id))
                 .ForMember(im => im.UnitName, i => i.MapFrom(x => x.Id))
-                .ForMember(im => im.RecipeDetailIds, i => i.MapFrom(x => x.RecipeDetails.Select(rd => rd.Id)))
                 .ReverseMap();
 
             CreateMap<Unit, UnitModel>()
                 .ForMember(um => um.Id, u => u.MapFrom(x => x.Id))
                 .ForMember(um => um.Name, u => u.MapFrom(x => x.Name))
-                .ForMember(um => um.RecipeDetailIds, u => u.MapFrom(x => x.RecipeDetails.Select(rd => rd.Id)))
-                .ForMember(um => um.IngredientIds, u => u.MapFrom(x => x.Ingredients.Select(i => i.Id)))
+                .ForMember(um => um.Abbreviation, u => u.MapFrom(x => x.Abbreviation))
                 .ReverseMap();
-
         }
     }
 }

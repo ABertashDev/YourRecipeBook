@@ -1,92 +1,46 @@
 ﻿using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
-using BLL.Validation;
-using DAL.Interfaces;
-using DAL.Entities;
+using DAL.Data;
 
 namespace BLL.Services
 {
     internal class IngredientService : BaseService, IIngredientService
     {
 
-        public IngredientService(IUnitOfWork unitOfWork, IMapper mapper)
-            : base(unitOfWork, mapper)
+        public IngredientService(RecipeBookDbContext context, IMapper mapper)
+            : base(context, mapper)
         {
-               
         }
 
-        public async Task AddAsync(IngredientModel model)
+        public Task<IngredientModel> AddAsync(IngredientModel model)
         {
-            
-            if (model is null)
-            {
-                throw new CommonException("Error! IngredientModel is null!");
-            }
-
-            if (!model.IsValid(out string message))
-            {
-                throw new CommonException($"Error! {message}");
-            }
-
-            await _unitOfWork.IngredientRepository.AddAsync(_mapper.Map<Ingredient>(model));
-
-            await _unitOfWork.SaveAsync();
-
+            throw new NotImplementedException();
         }
 
-        public async Task DeleteAsync(IngredientModel model)
+        public Task DeleteAsync(IngredientModel model)
         {
-
-            if (model is null)
-            {
-                throw new CommonException("Error! IngredientModel is null!");
-            }
-
-            await _unitOfWork.IngredientRepository.DeleteByIdAsync(model.Id);
-
-            await _unitOfWork.SaveAsync();
-
+            throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<IngredientModel>> GetAllAsync()
+        public Task<IEnumerable<IngredientModel>> GetAllAsync()
         {
-
-            return _mapper.Map<IEnumerable<IngredientModel>>(await _unitOfWork.IngredientRepository.GetAllAsync());
-            
+            throw new NotImplementedException();
         }
 
-        public async Task<IngredientModel> GetByIdAsync(int id)
+        public Task<IngredientModel> GetByIdAsync(int id)
         {
-
-            Ingredient ingr = await _unitOfWork.IngredientRepository.GetByIdAsync(id);
-
-            if (ingr is null)
-            {
-                throw new CommonException($"Error! Ingredient with id={id} doesn't exist!");
-            }
-
-            return _mapper.Map<IngredientModel>(ingr);
-
+            throw new NotImplementedException();
         }
 
-        public async Task UpdateAsync(IngredientModel model)
+        public bool IsValid()
         {
-            
-            if (model is null)
-            {
-                throw new CommonException($"Error! Ingredient is null!");
-            }
+            throw new NotImplementedException();
+        }
 
-            if (!model.IsValid(out string message))
-            {
-                throw new CommonException($"Error! {message}");
-            }
-
-            _unitOfWork.IngredientRepository.Update(_mapper.Map<Ingredient>(model));
-
-            await _unitOfWork.SaveAsync();
-
+        public Task<IngredientModel> UpdateAsync(IngredientModel model)
+        {
+            throw new NotImplementedException();
         }
     }
 }

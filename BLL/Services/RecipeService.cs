@@ -1,22 +1,46 @@
 ﻿using AutoMapper;
 using BLL.Interfaces;
-using DAL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BLL.Models;
+using DAL.Data;
 
 namespace BLL.Services
 {
     internal class RecipeService : BaseService, IRecipeService
     {
 
-        public RecipeService(IUnitOfWork unitOfWork, IMapper mapper)
-            : base(unitOfWork, mapper)
+        public RecipeService(RecipeBookDbContext context, IMapper mapper)
+            : base(context, mapper)
         {
-
         }
 
+        public Task<RecipeModel> AddAsync(RecipeModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteAsync(RecipeModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<RecipeModel>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<RecipeModel> GetByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsValid()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<RecipeModel> UpdateAsync(RecipeModel model)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
