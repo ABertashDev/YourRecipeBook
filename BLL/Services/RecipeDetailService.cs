@@ -5,10 +5,10 @@ using DAL.Data;
 
 namespace BLL.Services
 {
-    internal class UnitService : BaseService, IUnitService
+    internal class RecipeDetailService : BaseService, IUnitService
     {
 
-        public UnitService(RecipeBookDbContext context, IMapper mapper)
+        public RecipeDetailService(RecipeBookDbContext context, IMapper mapper)
             : base(context, mapper)
         {
         }

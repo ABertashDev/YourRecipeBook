@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace BLL.Interfaces
 {
     public interface ICrud<TModel> where TModel : class
@@ -13,10 +8,10 @@ namespace BLL.Interfaces
 
         Task<IEnumerable<TModel>> GetAllAsync();
 
-        Task AddAsync(TModel model);
+        Task<TModel> AddAsync(TModel model);
 
-        Task UpdateAsync(TModel model);
-       
+        Task<TModel> UpdateAsync(TModel model);
+
         Task DeleteAsync(TModel model);
 
     }

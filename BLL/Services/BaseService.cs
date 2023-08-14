@@ -1,24 +1,17 @@
 ﻿using AutoMapper;
-using DAL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DAL.Data;
 
 namespace BLL.Services
 {
     public class BaseService
     {
-
-        internal readonly IUnitOfWork _unitOfWork;
+        internal readonly RecipeBookDbContext _context;
         internal readonly IMapper _mapper;
 
-        public BaseService(IUnitOfWork unitOfWork, IMapper mapper)
+        public BaseService(RecipeBookDbContext context, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
+            _context = context;
             _mapper = mapper;
         }
-
     }
 }

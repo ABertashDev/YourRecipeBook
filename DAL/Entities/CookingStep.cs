@@ -1,11 +1,8 @@
 ﻿
-using DAL.Interfaces;
-
 namespace DAL.Entities
 {
     public class CookingStep : BaseEntity
     {
-
         public int Number { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -13,6 +10,5 @@ namespace DAL.Entities
         public int RecipeId { get; set; }
 
         public Recipe Recipe { get; set; }
-
     }
 }
