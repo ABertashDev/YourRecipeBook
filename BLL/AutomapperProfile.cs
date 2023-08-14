@@ -54,6 +54,7 @@ namespace BLL
             CreateMap<Unit, UnitModel>()
                 .ForMember(um => um.Id, u => u.MapFrom(x => x.Id))
                 .ForMember(um => um.Name, u => u.MapFrom(x => x.Name))
+                .ForMember(um => um.Abbreviation, u => u.MapFrom(x => x.Abbreviation))
                 .ReverseMap();
         }
     }
