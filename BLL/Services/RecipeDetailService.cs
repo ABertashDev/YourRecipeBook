@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
-using BLL.Validation;
 using DAL.Data;
-using DAL.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Services
 {
-    internal class RecipeDetailService : BaseService, IRecipeDetailService
+    internal class RecipeDetailService : BaseService, IUnitService
     {
 
         public RecipeDetailService(RecipeBookDbContext context, IMapper mapper)
@@ -16,97 +13,34 @@ namespace BLL.Services
         {
         }
 
-
-        private async Task<RecipeDetail?> GetFullNotDeletedByIdAsync(int id)
+        public Task<UnitModel> AddAsync(UnitModel model)
         {
-            return await _context.RecipeDetails
-                .Where(x => x.Id.Equals(id) && !x.IsDeleted)
-                .Include(x => x.Recipe)
-                .Include(x => x.Ingredient)
-                .Include(x => x.Unit)
-                .FirstOrDefaultAsync();
+            throw new NotImplementedException();
         }
 
-        private async Task<IEnumerable<RecipeDetail>> GetAllFullNotDeletedAsync()
+        public Task DeleteAsync(UnitModel model)
         {
-            return await _context.RecipeDetails
-               .Where(x => !x.IsDeleted)
-               .Include(x => x.Recipe)
-               .Include(x => x.Ingredient)
-               .Include(x => x.Unit)
-               .ToListAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task<RecipeDetailModel> AddAsync(RecipeDetailModel model)
+        public Task<IEnumerable<UnitModel>> GetAllAsync()
         {
-            if (model is null)
-            {
-                throw new ArgumentException($"The RecipeDetailModel model is empty", nameof(model));
-            }
-
-            if (!IsValid(model))
-            {
-                throw new ArgumentException($"The RecipeDetailModel is invalid", nameof(model));
-            }
-
-            var entity = _mapper.Map<RecipeDetail>(model);
-
-            await _context.RecipeDetails.AddAsync(entity);
-
-            await _context.SaveChangesAsync();
-
-            return _mapper.Map<RecipeDetailModel>(entity);
+            throw new NotImplementedException();
         }
 
-        public async Task DeleteAsync(int id)
+        public Task<UnitModel> GetByIdAsync(int id)
         {
-            var entity = await GetFullNotDeletedByIdAsync(id);
-
-            if (entity is null)
-            {
-                throw new NotFoundException($"The RecipeDetail with id ({id}) was not found.");
-            }
-
-            _context.RecipeDetails.Delete(entity, true);
-
-            await _context.SaveChangesAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<RecipeDetailModel>> GetAllAsync()
+        public bool IsValid()
         {
-            return _mapper.Map<List<RecipeDetailModel>>(await GetAllFullNotDeletedAsync());
+            throw new NotImplementedException();
         }
 
-        public async Task<RecipeDetailModel> GetByIdAsync(int id)
+        public Task<UnitModel> UpdateAsync(UnitModel model)
         {
-            return _mapper.Map<RecipeDetailModel>(await GetFullNotDeletedByIdAsync(id));
-        }
-
-        public bool IsValid(RecipeDetailModel model)
-        {
-            return true;
-        }
-
-        public async Task<RecipeDetailModel> UpdateAsync(int id, RecipeDetailModel model)
-        {
-            var existingEntity = await _context.RecipeDetails.GetNotDeletedByIdAsync(id);
-
-            if (existingEntity is null)
-            {
-                throw new NotFoundException($"The RecipeDetail with id ({id}) was not found.");
-            }
-
-            var newModel = _mapper.Map<RecipeDetail>(model);
-
-            existingEntity.IngredientId = newModel.IngredientId ?? existingEntity.IngredientId;
-            existingEntity.UnitId = newModel.UnitId ?? existingEntity.UnitId;
-            existingEntity.Quantity = newModel.Quantity;
-
-            _context.RecipeDetails.Update(existingEntity);
-
-            await _context.SaveChangesAsync();
-
-            return _mapper.Map<RecipeDetailModel>(existingEntity);
+            throw new NotImplementedException();
         }
     }
 }
