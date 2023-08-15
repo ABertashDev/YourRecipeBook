@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Services
 {
-    internal class RecipeService : BaseService, IRecipeService
+    public class RecipeService : BaseService, IRecipeService
     {
 
         public RecipeService(RecipeBookDbContext context, IMapper mapper)
