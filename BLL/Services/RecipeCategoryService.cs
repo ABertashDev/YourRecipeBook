@@ -19,7 +19,7 @@ namespace BLL.Services
             throw new NotImplementedException();
         }
 
-        public Task DeleteAsync(RecipeCategoryModel model)
+        public Task DeleteAsync(int id)
         {
             throw new NotImplementedException();
         }
@@ -34,12 +34,12 @@ namespace BLL.Services
             throw new NotImplementedException();
         }
 
-        public bool IsValid()
+        public bool IsValid(RecipeCategoryModel model)
         {
             throw new NotImplementedException();
         }
 
-        public Task<RecipeCategoryModel> UpdateAsync(RecipeCategoryModel model)
+        public Task<RecipeCategoryModel> UpdateAsync(int id, RecipeCategoryModel model)
         {
             throw new NotImplementedException();
         }
