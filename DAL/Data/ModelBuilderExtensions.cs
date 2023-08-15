@@ -2,7 +2,6 @@
 using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace DAL.Data
@@ -10,6 +9,8 @@ namespace DAL.Data
     public static class ModelBuilderExtensions
     {
         private const int NumberOfIngredients = 50;
+        private const int NumberOfRecipes = 20;
+        private const int NumberOfRecipeDetails = 120;
 
         private static readonly DateTime _currentDate = DateTime.Now;
 
@@ -26,27 +27,19 @@ namespace DAL.Data
 
         public static void SeedData(this ModelBuilder modelBuilder)
         {
-            Randomizer.Seed = new Random(5004);
-
             var units = GenerateRandomUnits();
             var recipeCategories = GenerateRandomRecipeCategories();
             var ingredients = GenerateRandomIngredients(units);
+            var recipes = GenerateRandomRecipe(recipeCategories);
+            var cookingSteps = GenerateRandomCookingSteps(recipes);
+            var recipeDetails = GenerateRandomRecipeDetails(recipes, ingredients);
 
             modelBuilder.Entity<Unit>().HasData(units);
             modelBuilder.Entity<RecipeCategory>().HasData(recipeCategories);
             modelBuilder.Entity<Ingredient>().HasData(ingredients);
-            //modelBuilder.Entity<BSATask.DAL.Entities.Task>().HasData(tasks);
-            //modelBuilder.Entity<Team>().HasData(teams);
-            //modelBuilder.Entity<User>().HasData(users);
-            //modelBuilder.Entity<TaskStateClass>()
-            //                            .HasData(Enum.GetValues(typeof(TaskState))
-            //                                .Cast<TaskState>()
-            //                                .Select(item => new TaskStateClass
-            //                                {
-            //                                    Id = ((int)item + 1),
-            //                                    Name = Helper.GetTaskStateRepresentation(item)
-            //                                })
-            //                            );
+            modelBuilder.Entity<Recipe>().HasData(recipes);
+            modelBuilder.Entity<CookingStep>().HasData(cookingSteps);
+            modelBuilder.Entity<RecipeDetail>().HasData(recipeDetails);
         }
 
 
@@ -82,7 +75,7 @@ namespace DAL.Data
                 .Entity<CookingStep>()
                 .Property(cs => cs.Photo)
                 .HasColumnName("Photo");
-            
+
             modelBuilder
                 .Entity<CookingStep>()
                 .Property(cs => cs.CreatedAt)
@@ -167,7 +160,7 @@ namespace DAL.Data
                .ValueGeneratedOnAdd();
 
             modelBuilder
-                 .Entity<Recipe>()
+                .Entity<Recipe>()
                 .HasOne(r => r.Category)
                 .WithMany(c => c.Recipes)
                 .HasForeignKey(r => r.CategoryId)
@@ -329,17 +322,75 @@ namespace DAL.Data
         {
             int ingId = 1;
 
-            var testIngredientsFake = new Faker<Ingredient>()
+            var faker = new Faker<Ingredient>()
                 .RuleFor(u => u.Id, f => ingId++)
                 .RuleFor(u => u.Name, f => f.Commerce.Product())
                 .RuleFor(u => u.Description, f => f.Commerce.ProductDescription())
                 .RuleFor(u => u.UnitId, f => f.PickRandom(units).Id)
                 .RuleFor(u => u.CreatedAt, f => _currentDate);
 
-            var generatedIngredients = testIngredientsFake.Generate(NumberOfIngredients);
+            var generatedIngredients = faker.Generate(NumberOfIngredients);
 
             return generatedIngredients;
         }
 
+        private static ICollection<Recipe> GenerateRandomRecipe(ICollection<RecipeCategory> recipeCategories)
+        {
+            int recipeId = 1;
+
+            var faker = new Faker<Recipe>()
+                .RuleFor(r => r.Id, f => recipeId++)
+                .RuleFor(r => r.Name, f => f.Lorem.Sentence(1, 5))
+                .RuleFor(r => r.Description, f => f.Lorem.Sentence(10, 20))
+                .RuleFor(r => r.CategoryId, f => f.PickRandom(recipeCategories).Id)
+                .RuleFor(r => r.CreatedAt, f => _currentDate);
+
+            var generatedRecipes = faker.Generate(NumberOfRecipes);
+
+            return generatedRecipes;
+        }
+
+        private static ICollection<CookingStep> GenerateRandomCookingSteps(ICollection<Recipe> recipes)
+        {
+            int csId = 1;
+
+            List<CookingStep> generatedCookingSteps = new();
+
+            foreach (var recipe in recipes)
+            {
+                int number = 1;
+
+                var faker = new Faker<CookingStep>()
+                    .RuleFor(cs => cs.Id, f => csId++)
+                    .RuleFor(cs => cs.Name, f => f.Lorem.Sentence(10, 20))
+                    .RuleFor(cs => cs.Number, f => number++)
+                    .RuleFor(cs => cs.Description, f => f.Lorem.Paragraph())
+                    .RuleFor(cs => cs.Photo, f => f.Image.PicsumUrl())
+                    .RuleFor(cs => cs.RecipeId, f => f.PickRandom(recipes).Id)
+                    .RuleFor(cs => cs.CreatedAt, f => _currentDate);
+
+                generatedCookingSteps.AddRange(faker.Generate(new Random().Next(5, 12)));
+            }
+
+            return generatedCookingSteps;
+        }
+
+        private static ICollection<RecipeDetail> GenerateRandomRecipeDetails(ICollection<Recipe> recipes, ICollection<Ingredient> ingredients)
+        {
+            int rdId = 1;
+
+            var faker = new Faker<RecipeDetail>()
+                .RuleFor(rd => rd.Id, f => rdId++)
+                .RuleFor(rd => rd.RecipeId, f => f.PickRandom(recipes).Id)
+                .RuleFor(rd => rd.Ingredient, f => f.PickRandom(ingredients))
+                .RuleFor(rd => rd.IngredientId, (f, rd) => rd.Ingredient.Id)
+                .RuleFor(rd => rd.UnitId, (f, rd) => rd.Ingredient.Unit.Id)
+                .RuleFor(rd => rd.Quantity, f => f.PickRandom<double>())
+                .RuleFor(rd => rd.CreatedAt, f => _currentDate);
+
+            var generatedRecipeDetails = faker.Generate(NumberOfRecipeDetails);
+
+            return generatedRecipeDetails;
+        }
     }
 }
