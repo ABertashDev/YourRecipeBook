@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
-using BLL.Validation;
 using DAL.Data;
-using DAL.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Services
 {
@@ -16,93 +13,34 @@ namespace BLL.Services
         {
         }
 
-
-        private async Task<Ingredient?> GetFullNotDeletedByIdAsync(int id)
+        public Task<IngredientModel> AddAsync(IngredientModel model)
         {
-            return await _context.Ingredients
-                .Where(x => x.Id.Equals(id) && !x.IsDeleted)
-                .Include(x => x.Unit)
-                .FirstOrDefaultAsync();
+            throw new NotImplementedException();
         }
 
-        private async Task<IEnumerable<Ingredient>> GetAllFullNotDeletedAsync()
+        public Task DeleteAsync(IngredientModel model)
         {
-            return await _context.Ingredients
-               .Where(x => !x.IsDeleted)
-               .Include(x => x.Unit)
-               .ToListAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task<IngredientModel> AddAsync(IngredientModel model)
+        public Task<IEnumerable<IngredientModel>> GetAllAsync()
         {
-            if (model is null)
-            {
-                throw new ArgumentException($"The IngredientModel model is empty", nameof(model));
-            }
-
-            if (!IsValid(model))
-            {
-                throw new ArgumentException($"The IngredientModel is invalid", nameof(model));
-            }
-
-            var entity = _mapper.Map<Ingredient>(model);
-
-            await _context.Ingredients.AddAsync(entity);
-
-            await _context.SaveChangesAsync();
-
-            return _mapper.Map<IngredientModel>(entity);
+            throw new NotImplementedException();
         }
 
-        public async Task DeleteAsync(int id)
+        public Task<IngredientModel> GetByIdAsync(int id)
         {
-            var entity = await GetFullNotDeletedByIdAsync(id);
-
-            if (entity is null)
-            {
-                throw new NotFoundException($"The Ingredient with id ({id}) was not found.");
-            }
-
-            _context.Ingredients.Delete(entity, false);
-
-            await _context.SaveChangesAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<IngredientModel>> GetAllAsync()
+        public bool IsValid()
         {
-            return _mapper.Map<List<IngredientModel>>(await GetAllFullNotDeletedAsync());
+            throw new NotImplementedException();
         }
 
-        public async Task<IngredientModel> GetByIdAsync(int id)
+        public Task<IngredientModel> UpdateAsync(IngredientModel model)
         {
-            return _mapper.Map<IngredientModel>(await GetFullNotDeletedByIdAsync(id));
-        }
-
-        public bool IsValid(IngredientModel model)
-        {
-            return true;
-        }
-
-        public async Task<IngredientModel> UpdateAsync(int id, IngredientModel model)
-        {
-            var existingEntity = await _context.Ingredients.GetNotDeletedByIdAsync(id);
-
-            if (existingEntity is null)
-            {
-                throw new NotFoundException($"The Ingredient with id ({id}) was not found.");
-            }
-
-            var newModel = _mapper.Map<Ingredient>(model);
-
-            existingEntity.Name = newModel.Name;
-            existingEntity.Description = newModel.Description;
-            existingEntity.UnitId = newModel.UnitId ?? existingEntity.UnitId;
-
-            _context.Ingredients.Update(existingEntity);
-
-            await _context.SaveChangesAsync();
-
-            return _mapper.Map<IngredientModel>(existingEntity);
+            throw new NotImplementedException();
         }
     }
 }
