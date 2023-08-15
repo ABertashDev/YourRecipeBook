@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
+using BLL.Validation;
 using DAL.Data;
+using DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Services
 {
@@ -13,34 +16,87 @@ namespace BLL.Services
         {
         }
 
-        public Task<UnitModel> AddAsync(UnitModel model)
+        private async Task<Unit?> GetFullNotDeletedByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Units
+                .Where(x => x.Id.Equals(id) && !x.IsDeleted)
+                .FirstOrDefaultAsync();
         }
 
-        public Task DeleteAsync(UnitModel model)
+        private async Task<IEnumerable<Unit>> GetAllFullNotDeletedAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Units.Where(x => !x.IsDeleted).ToListAsync();
         }
 
-        public Task<IEnumerable<UnitModel>> GetAllAsync()
+        public async Task<UnitModel> AddAsync(UnitModel model)
         {
-            throw new NotImplementedException();
+            if (model is null)
+            {
+                throw new ArgumentException($"The UnitModel model is empty", nameof(model));
+            }
+
+            if (!IsValid(model))
+            {
+                throw new ArgumentException($"The UnitModel is invalid", nameof(model));
+            }
+
+            var entity = _mapper.Map<Unit>(model);
+
+            await _context.Units.AddAsync(entity);
+
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<UnitModel>(entity);
         }
 
-        public Task<UnitModel> GetByIdAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var entity = await GetFullNotDeletedByIdAsync(id);
+
+            if (entity is null)
+            {
+                throw new NotFoundException($"The Unit with id ({id}) was not found.");
+            }
+
+            _context.Units.Delete(entity, false);
+
+            await _context.SaveChangesAsync();
         }
 
-        public bool IsValid()
+        public async Task<IEnumerable<UnitModel>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return _mapper.Map<List<UnitModel>>(await GetAllFullNotDeletedAsync());
         }
 
-        public Task<UnitModel> UpdateAsync(UnitModel model)
+        public async Task<UnitModel> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<UnitModel>(await GetFullNotDeletedByIdAsync(id));
+        }
+
+        public bool IsValid(UnitModel model)
+        {
+            return true;
+        }
+
+        public async Task<UnitModel> UpdateAsync(int id, UnitModel model)
+        {
+            var existingEntity = await _context.Units.GetNotDeletedByIdAsync(id);
+
+            if (existingEntity is null)
+            {
+                throw new NotFoundException($"The Unit with id ({id}) was not found.");
+            }
+
+            var newModel = _mapper.Map<Unit>(model);
+
+            existingEntity.Name = newModel.Name;
+            existingEntity.Abbreviation = newModel.Abbreviation;
+
+            _context.Units.Update(existingEntity);
+
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<UnitModel>(existingEntity);
         }
     }
 }

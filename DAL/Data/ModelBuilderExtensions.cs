@@ -160,7 +160,7 @@ namespace DAL.Data
                .ValueGeneratedOnAdd();
 
             modelBuilder
-                 .Entity<Recipe>()
+                .Entity<Recipe>()
                 .HasOne(r => r.Category)
                 .WithMany(c => c.Recipes)
                 .HasForeignKey(r => r.CategoryId)
