@@ -3,6 +3,7 @@ using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DAL.Data
 {
@@ -378,14 +379,14 @@ namespace DAL.Data
         private static ICollection<RecipeDetail> GenerateRandomRecipeDetails(ICollection<Recipe> recipes, ICollection<Ingredient> ingredients)
         {
             int rdId = 1;
+            var random = new Random();
 
             var faker = new Faker<RecipeDetail>()
                 .RuleFor(rd => rd.Id, f => rdId++)
                 .RuleFor(rd => rd.RecipeId, f => f.PickRandom(recipes).Id)
-                .RuleFor(rd => rd.Ingredient, f => f.PickRandom(ingredients))
-                .RuleFor(rd => rd.IngredientId, (f, rd) => rd.Ingredient.Id)
-                .RuleFor(rd => rd.UnitId, (f, rd) => rd.Ingredient.Unit.Id)
-                .RuleFor(rd => rd.Quantity, f => f.PickRandom<double>())
+                .RuleFor(rd => rd.IngredientId, f => f.PickRandom(ingredients).Id)
+                .RuleFor(rd => rd.UnitId, f => f.PickRandom(ingredients).UnitId)
+                .RuleFor(rd => rd.Quantity, f => Math.Round(random.NextDouble() * f.PickRandom(1, 10, 100, 1000), 3))
                 .RuleFor(rd => rd.CreatedAt, f => _currentDate);
 
             var generatedRecipeDetails = faker.Generate(NumberOfRecipeDetails);
