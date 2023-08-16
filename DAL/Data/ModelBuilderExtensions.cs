@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DAL.Data
 {
@@ -341,5 +342,63 @@ namespace DAL.Data
             return generatedIngredients;
         }
 
+        private static ICollection<Recipe> GenerateRandomRecipe(ICollection<RecipeCategory> recipeCategories)
+        {
+            int recipeId = 1;
+
+            var faker = new Faker<Recipe>()
+                .RuleFor(r => r.Id, f => recipeId++)
+                .RuleFor(r => r.Name, f => f.Lorem.Sentence(1, 5))
+                .RuleFor(r => r.Description, f => f.Lorem.Sentence(10, 20))
+                .RuleFor(r => r.CategoryId, f => f.PickRandom(recipeCategories).Id)
+                .RuleFor(r => r.CreatedAt, f => _currentDate);
+
+            var generatedRecipes = faker.Generate(NumberOfRecipes);
+
+            return generatedRecipes;
+        }
+
+        private static ICollection<CookingStep> GenerateRandomCookingSteps(ICollection<Recipe> recipes)
+        {
+            int csId = 1;
+
+            List<CookingStep> generatedCookingSteps = new();
+
+            foreach (var recipe in recipes)
+            {
+                int number = 1;
+
+                var faker = new Faker<CookingStep>()
+                    .RuleFor(cs => cs.Id, f => csId++)
+                    .RuleFor(cs => cs.Name, f => f.Lorem.Sentence(10, 20))
+                    .RuleFor(cs => cs.Number, f => number++)
+                    .RuleFor(cs => cs.Description, f => f.Lorem.Paragraph())
+                    .RuleFor(cs => cs.Photo, f => f.Image.PicsumUrl())
+                    .RuleFor(cs => cs.RecipeId, f => f.PickRandom(recipes).Id)
+                    .RuleFor(cs => cs.CreatedAt, f => _currentDate);
+
+                generatedCookingSteps.AddRange(faker.Generate(new Random().Next(5, 12)));
+            }
+
+            return generatedCookingSteps;
+        }
+
+        private static ICollection<RecipeDetail> GenerateRandomRecipeDetails(ICollection<Recipe> recipes, ICollection<Ingredient> ingredients)
+        {
+            int rdId = 1;
+            var random = new Random();
+
+            var faker = new Faker<RecipeDetail>()
+                .RuleFor(rd => rd.Id, f => rdId++)
+                .RuleFor(rd => rd.RecipeId, f => f.PickRandom(recipes).Id)
+                .RuleFor(rd => rd.IngredientId, f => f.PickRandom(ingredients).Id)
+                .RuleFor(rd => rd.UnitId, f => f.PickRandom(ingredients).UnitId)
+                .RuleFor(rd => rd.Quantity, f => Math.Round(random.NextDouble() * f.PickRandom(1, 10, 100, 1000), 3))
+                .RuleFor(rd => rd.CreatedAt, f => _currentDate);
+
+            var generatedRecipeDetails = faker.Generate(NumberOfRecipeDetails);
+
+            return generatedRecipeDetails;
+        }
     }
 }

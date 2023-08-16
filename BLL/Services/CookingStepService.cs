@@ -5,7 +5,7 @@ using DAL.Data;
 
 namespace BLL.Services
 {
-    internal class CookingStepService : BaseService, IUnitService
+    public class CookingStepService : BaseService, ICookingStepService
     {
 
         public CookingStepService(RecipeBookDbContext context, IMapper mapper)
