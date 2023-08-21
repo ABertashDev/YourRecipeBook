@@ -7,14 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{0F021107-B8A7-4DF2-A5D6-062233631C6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{9A07A32F-609F-496C-817A-6357A90E1BBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLL", "BLL\BLL.csproj", "{9A07A32F-609F-496C-817A-6357A90E1BBA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0F021107-B8A7-4DF2-A5D6-062233631C6C} = {0F021107-B8A7-4DF2-A5D6-062233631C6C}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{5F4A16B4-B73C-47A9-A9F9-B20D8E8C8A0C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9A07A32F-609F-496C-817A-6357A90E1BBA} = {9A07A32F-609F-496C-817A-6357A90E1BBA}
 	EndProjectSection
 EndProject
 Global
@@ -35,10 +30,6 @@ Global
 		{9A07A32F-609F-496C-817A-6357A90E1BBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A07A32F-609F-496C-817A-6357A90E1BBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A07A32F-609F-496C-817A-6357A90E1BBA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5F4A16B4-B73C-47A9-A9F9-B20D8E8C8A0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5F4A16B4-B73C-47A9-A9F9-B20D8E8C8A0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5F4A16B4-B73C-47A9-A9F9-B20D8E8C8A0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5F4A16B4-B73C-47A9-A9F9-B20D8E8C8A0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
