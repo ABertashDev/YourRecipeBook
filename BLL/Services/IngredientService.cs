@@ -33,6 +33,14 @@ namespace BLL.Services
                .ToListAsync();
         }
 
+        private async Task<Ingredient?> GetNotDeletedByNameAsync(string value)
+        {
+            return await _context.Ingredients
+                .Where(x => x.Name.Equals(value) && !x.IsDeleted)
+                .Include(x => x.Unit)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<IngredientModel> AddAsync(IngredientModel model)
         {
             if (model is null)
@@ -76,6 +84,11 @@ namespace BLL.Services
         public async Task<IngredientModel> GetByIdAsync(int id)
         {
             return _mapper.Map<IngredientModel>(await GetFullNotDeletedByIdAsync(id));
+        }
+
+        public async Task<IngredientModel> GetByNameAsync(string value)
+        {
+            return _mapper.Map<IngredientModel>(await GetNotDeletedByNameAsync(value));
         }
 
         public bool IsValid(IngredientModel model)

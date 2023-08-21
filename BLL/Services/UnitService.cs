@@ -2,6 +2,7 @@
 using BLL.Interfaces;
 using BLL.Models;
 using BLL.Validation;
+using Bogus.Bson;
 using DAL.Data;
 using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,13 @@ namespace BLL.Services
         private async Task<IEnumerable<Unit>> GetAllFullNotDeletedAsync()
         {
             return await _context.Units.Where(x => !x.IsDeleted).ToListAsync();
+        }
+
+        private async Task<Unit?> GetNotDeletedByAbbreviationAsync(string value)
+        {
+            return await _context.Units
+                .Where(x => x.Abbreviation.Equals(value.Trim()) && !x.IsDeleted)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<UnitModel> AddAsync(UnitModel model)
@@ -71,6 +79,11 @@ namespace BLL.Services
         public async Task<UnitModel> GetByIdAsync(int id)
         {
             return _mapper.Map<UnitModel>(await GetFullNotDeletedByIdAsync(id));
+        }
+
+        public async Task<UnitModel> GetByAbbreviationAsync(string value)
+        {
+            return _mapper.Map<UnitModel>(await GetNotDeletedByAbbreviationAsync(value));
         }
 
         public bool IsValid(UnitModel model)

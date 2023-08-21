@@ -40,6 +40,17 @@ namespace BLL.Services
                .ToListAsync();
         }
 
+        private async Task<RecipeCategory?> GetNotDeletedByNameAsync(string value)
+        {
+            return await _context.RecipeCategories
+                .Where(x => x.Name.Equals(value) && !x.IsDeleted)
+                .Include(x => x.Recipes)
+                    .ThenInclude(y => y.RecipeDetails)
+                .Include(x => x.Recipes)
+                    .ThenInclude(y => y.CookingSteps)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<RecipeCategoryModel> AddAsync(RecipeCategoryModel model)
         {
             if (model is null)
@@ -88,6 +99,11 @@ namespace BLL.Services
         public async Task<RecipeCategoryModel> GetByIdAsync(int id)
         {
             return _mapper.Map<RecipeCategoryModel>(await GetFullNotDeletedByIdAsync(id));
+        }
+
+        public async Task<RecipeCategoryModel> GetByNameAsync(string value)
+        {
+            return _mapper.Map<RecipeCategoryModel>(await GetNotDeletedByNameAsync(value));
         }
 
         public bool IsValid(RecipeCategoryModel model)
