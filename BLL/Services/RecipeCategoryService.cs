@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
+using BLL.Validation;
 using DAL.Data;
+using DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Services
 {
@@ -14,7 +17,19 @@ namespace BLL.Services
 
         }
 
-        public Task<RecipeCategoryModel> AddAsync(RecipeCategoryModel model)
+
+        private async Task<RecipeCategory?> GetFullNotDeletedByIdAsync(int id)
+        {
+            return await _context.RecipeCategories
+                .Where(x => x.Id.Equals(id) && !x.IsDeleted)
+                .Include(x => x.Recipes)
+                    .ThenInclude(y => y.RecipeDetails)
+                .Include(x => x.Recipes)
+                    .ThenInclude(y => y.CookingSteps)
+                .FirstOrDefaultAsync();
+        }
+
+        private async Task<IEnumerable<RecipeCategory>> GetAllFullNotDeletedAsync()
         {
             return await _context.RecipeCategories
                .Where(x => !x.IsDeleted)
@@ -57,19 +72,33 @@ namespace BLL.Services
             return _mapper.Map<RecipeCategoryModel>(entity);
         }
 
-        public Task DeleteAsync(RecipeCategoryModel model)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var entity = await GetFullNotDeletedByIdAsync(id);
+
+            if (entity is null)
+            {
+                throw new NotFoundException($"The RecipeCategory with id ({id}) was not found.");
+            }
+
+            _context.RecipeCategories.Delete(entity, false);
+
+            foreach (var item in entity.Recipes)
+            {
+                item.Category = null;
+            }
+
+            await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<RecipeCategoryModel>> GetAllAsync()
+        public async Task<IEnumerable<RecipeCategoryModel>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return _mapper.Map<List<RecipeCategoryModel>>(await GetAllFullNotDeletedAsync());
         }
 
-        public Task<RecipeCategoryModel> GetByIdAsync(int id)
+        public async Task<RecipeCategoryModel> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<RecipeCategoryModel>(await GetFullNotDeletedByIdAsync(id));
         }
 
         public async Task<RecipeCategoryModel> GetByNameAsync(string value)
@@ -79,12 +108,28 @@ namespace BLL.Services
 
         public bool IsValid(RecipeCategoryModel model)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
-        public Task<RecipeCategoryModel> UpdateAsync(RecipeCategoryModel model)
+        public async Task<RecipeCategoryModel> UpdateAsync(int id, RecipeCategoryModel model)
         {
-            throw new NotImplementedException();
+            var existingEntity = await _context.RecipeCategories.GetNotDeletedByIdAsync(id);
+
+            if (existingEntity is null)
+            {
+                throw new NotFoundException($"The RecipeCategory with id ({id}) was not found.");
+            }
+
+            var newModel = _mapper.Map<RecipeCategory>(model);
+
+            existingEntity.Name = newModel.Name;
+            existingEntity.SortOrder = newModel.SortOrder;
+
+            _context.RecipeCategories.Update(existingEntity);
+
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<RecipeCategoryModel>(existingEntity);
         }
     }
 }
