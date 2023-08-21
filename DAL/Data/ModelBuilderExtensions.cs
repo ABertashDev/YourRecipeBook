@@ -33,6 +33,12 @@ namespace DAL.Data
             var recipeCategories = GenerateRandomRecipeCategories();
             var ingredients = GenerateRandomIngredients(units);
 
+            //Clear data
+            //var ingredients = new List<Ingredient>();
+            //var recipes = new List<Ingredient>();
+            //var cookingSteps = new List<Ingredient>();
+            //var recipeDetails = new List<Ingredient>();
+
             modelBuilder.Entity<Unit>().HasData(units);
             modelBuilder.Entity<RecipeCategory>().HasData(recipeCategories);
             modelBuilder.Entity<Ingredient>().HasData(ingredients);
@@ -112,6 +118,11 @@ namespace DAL.Data
 
             modelBuilder
                 .Entity<Ingredient>()
+                .HasIndex(i => i.Name)
+                .IsUnique();
+
+            modelBuilder
+                .Entity<Ingredient>()
                 .Property(i => i.Name)
                 .HasColumnName("Name")
                 .HasMaxLength(500)
@@ -188,6 +199,11 @@ namespace DAL.Data
 
             modelBuilder
                 .Entity<RecipeCategory>()
+                .HasIndex(rc => rc.Name)
+                .IsUnique();
+            
+            modelBuilder
+                .Entity<RecipeCategory>()
                 .Property(rc => rc.Name)
                 .HasColumnName("Name")
                 .HasMaxLength(500)
@@ -201,9 +217,9 @@ namespace DAL.Data
                .ValueGeneratedOnAdd();
 
             modelBuilder
-                 .Entity<RecipeCategory>()
-                .Property(rc => rc.SortOrder)
-                .HasColumnName("SortOrder");
+               .Entity<RecipeCategory>()
+               .Property(rc => rc.SortOrder)
+               .HasColumnName("SortOrder");
 
         }
 
@@ -268,17 +284,22 @@ namespace DAL.Data
 
             modelBuilder
                 .Entity<Unit>()
+                .HasIndex(u => u.Abbreviation)
+                .IsUnique(true);
+
+            modelBuilder
+                .Entity<Unit>()
                 .Property(u => u.Name)
                 .HasColumnName("Name")
                 .HasMaxLength(500)
                 .IsRequired();
 
             modelBuilder
-              .Entity<Unit>()
-              .Property(u => u.CreatedAt)
-              .HasColumnName("CreatedAt")
-              .HasDefaultValueSql("getdate()")
-              .ValueGeneratedOnAdd();
+                .Entity<Unit>()
+                .Property(u => u.CreatedAt)
+                .HasColumnName("CreatedAt")
+                .HasDefaultValueSql("getdate()")
+                .ValueGeneratedOnAdd();
         }
 
 
@@ -329,10 +350,11 @@ namespace DAL.Data
         private static ICollection<Ingredient> GenerateRandomIngredients(ICollection<Unit> units)
         {
             int ingId = 1;
+            int nameId = 1;
 
             var testIngredientsFake = new Faker<Ingredient>()
                 .RuleFor(u => u.Id, f => ingId++)
-                .RuleFor(u => u.Name, f => f.Commerce.Product())
+                .RuleFor(u => u.Name, f => $"{f.Commerce.Product()}_{nameId++}")
                 .RuleFor(u => u.Description, f => f.Commerce.ProductDescription())
                 .RuleFor(u => u.UnitId, f => f.PickRandom(units).Id)
                 .RuleFor(u => u.CreatedAt, f => _currentDate);
