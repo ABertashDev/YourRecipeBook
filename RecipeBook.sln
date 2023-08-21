@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{DBBE99A4-1D6A-483A-BEF3-A6DA63185D09}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{0F021107-B8A7-4DF2-A5D6-062233631C6C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLL", "BLL\BLL.csproj", "{9A07A32F-609F-496C-817A-6357A90E1BBA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{9A07A32F-609F-496C-817A-6357A90E1BBA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0F021107-B8A7-4DF2-A5D6-062233631C6C} = {0F021107-B8A7-4DF2-A5D6-062233631C6C}
 	EndProjectSection
@@ -21,6 +23,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DBBE99A4-1D6A-483A-BEF3-A6DA63185D09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBBE99A4-1D6A-483A-BEF3-A6DA63185D09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBBE99A4-1D6A-483A-BEF3-A6DA63185D09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBBE99A4-1D6A-483A-BEF3-A6DA63185D09}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0F021107-B8A7-4DF2-A5D6-062233631C6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0F021107-B8A7-4DF2-A5D6-062233631C6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F021107-B8A7-4DF2-A5D6-062233631C6C}.Release|Any CPU.ActiveCfg = Release|Any CPU

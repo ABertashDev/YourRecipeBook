@@ -2,6 +2,7 @@
 using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,8 +11,6 @@ namespace DAL.Data
     public static class ModelBuilderExtensions
     {
         private const int NumberOfIngredients = 50;
-        private const int NumberOfRecipes = 20;
-        private const int NumberOfRecipeDetails = 120;
 
         private static readonly DateTime _currentDate = DateTime.Now;
 
@@ -28,12 +27,11 @@ namespace DAL.Data
 
         public static void SeedData(this ModelBuilder modelBuilder)
         {
+            Randomizer.Seed = new Random(5004);
+
             var units = GenerateRandomUnits();
             var recipeCategories = GenerateRandomRecipeCategories();
             var ingredients = GenerateRandomIngredients(units);
-            var recipes = GenerateRandomRecipe(recipeCategories);
-            var cookingSteps = GenerateRandomCookingSteps(recipes);
-            var recipeDetails = GenerateRandomRecipeDetails(recipes, ingredients);
 
             //Clear data
             //var ingredients = new List<Ingredient>();
@@ -44,9 +42,18 @@ namespace DAL.Data
             modelBuilder.Entity<Unit>().HasData(units);
             modelBuilder.Entity<RecipeCategory>().HasData(recipeCategories);
             modelBuilder.Entity<Ingredient>().HasData(ingredients);
-            modelBuilder.Entity<Recipe>().HasData(recipes);
-            modelBuilder.Entity<CookingStep>().HasData(cookingSteps);
-            modelBuilder.Entity<RecipeDetail>().HasData(recipeDetails);
+            //modelBuilder.Entity<BSATask.DAL.Entities.Task>().HasData(tasks);
+            //modelBuilder.Entity<Team>().HasData(teams);
+            //modelBuilder.Entity<User>().HasData(users);
+            //modelBuilder.Entity<TaskStateClass>()
+            //                            .HasData(Enum.GetValues(typeof(TaskState))
+            //                                .Cast<TaskState>()
+            //                                .Select(item => new TaskStateClass
+            //                                {
+            //                                    Id = ((int)item + 1),
+            //                                    Name = Helper.GetTaskStateRepresentation(item)
+            //                                })
+            //                            );
         }
 
 
@@ -82,7 +89,7 @@ namespace DAL.Data
                 .Entity<CookingStep>()
                 .Property(cs => cs.Photo)
                 .HasColumnName("Photo");
-
+            
             modelBuilder
                 .Entity<CookingStep>()
                 .Property(cs => cs.CreatedAt)
@@ -172,7 +179,7 @@ namespace DAL.Data
                .ValueGeneratedOnAdd();
 
             modelBuilder
-                .Entity<Recipe>()
+                 .Entity<Recipe>()
                 .HasOne(r => r.Category)
                 .WithMany(c => c.Recipes)
                 .HasForeignKey(r => r.CategoryId)
@@ -345,14 +352,14 @@ namespace DAL.Data
             int ingId = 1;
             int nameId = 1;
 
-            var faker = new Faker<Ingredient>()
+            var testIngredientsFake = new Faker<Ingredient>()
                 .RuleFor(u => u.Id, f => ingId++)
                 .RuleFor(u => u.Name, f => $"{f.Commerce.Product()}_{nameId++}")
                 .RuleFor(u => u.Description, f => f.Commerce.ProductDescription())
                 .RuleFor(u => u.UnitId, f => f.PickRandom(units).Id)
                 .RuleFor(u => u.CreatedAt, f => _currentDate);
 
-            var generatedIngredients = faker.Generate(NumberOfIngredients);
+            var generatedIngredients = testIngredientsFake.Generate(NumberOfIngredients);
 
             return generatedIngredients;
         }
