@@ -16,7 +16,45 @@ namespace BLL.Services
 
         public Task<RecipeCategoryModel> AddAsync(RecipeCategoryModel model)
         {
-            throw new NotImplementedException();
+            return await _context.RecipeCategories
+               .Where(x => !x.IsDeleted)
+               .Include(x => x.Recipes)
+                   .ThenInclude(y => y.RecipeDetails)
+               .Include(x => x.Recipes)
+                   .ThenInclude(y => y.CookingSteps)
+               .ToListAsync();
+        }
+
+        private async Task<RecipeCategory?> GetNotDeletedByNameAsync(string value)
+        {
+            return await _context.RecipeCategories
+                .Where(x => x.Name.Equals(value) && !x.IsDeleted)
+                .Include(x => x.Recipes)
+                    .ThenInclude(y => y.RecipeDetails)
+                .Include(x => x.Recipes)
+                    .ThenInclude(y => y.CookingSteps)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<RecipeCategoryModel> AddAsync(RecipeCategoryModel model)
+        {
+            if (model is null)
+            {
+                throw new ArgumentException($"The RecipeCategoryModel model is empty", nameof(model));
+            }
+
+            if (!IsValid(model))
+            {
+                throw new ArgumentException($"The RecipeCategoryModel is invalid", nameof(model));
+            }
+
+            var entity = _mapper.Map<RecipeCategory>(model);
+
+            await _context.RecipeCategories.AddAsync(entity);
+
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<RecipeCategoryModel>(entity);
         }
 
         public Task DeleteAsync(RecipeCategoryModel model)
@@ -34,7 +72,12 @@ namespace BLL.Services
             throw new NotImplementedException();
         }
 
-        public bool IsValid()
+        public async Task<RecipeCategoryModel> GetByNameAsync(string value)
+        {
+            return _mapper.Map<RecipeCategoryModel>(await GetNotDeletedByNameAsync(value));
+        }
+
+        public bool IsValid(RecipeCategoryModel model)
         {
             throw new NotImplementedException();
         }

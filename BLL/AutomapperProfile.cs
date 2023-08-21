@@ -45,10 +45,10 @@ namespace BLL
 
             CreateMap<Ingredient, IngredientModel>()
                 .ForMember(im => im.Id, i => i.MapFrom(x => x.Id))
-                .ForMember(im => im.Name, i => i.MapFrom(x => x.Id))
-                .ForMember(im => im.Description, i => i.MapFrom(x => x.Id))
-                .ForMember(im => im.UnitId, i => i.MapFrom(x => x.Id))
-                .ForMember(im => im.UnitName, i => i.MapFrom(x => x.Id))
+                .ForMember(im => im.Name, i => i.MapFrom(x => x.Name))
+                .ForMember(im => im.Description, i => i.MapFrom(x => x.Description))
+                .ForMember(im => im.UnitId, i => i.MapFrom(x => x.UnitId))
+                .ForMember(im => im.UnitName, i => i.MapFrom(x => x.Unit.Name))
                 .ReverseMap();
 
             CreateMap<Unit, UnitModel>()

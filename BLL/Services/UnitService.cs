@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
+using BLL.Validation;
+using Bogus.Bson;
 using DAL.Data;
 
 namespace BLL.Services
@@ -23,7 +25,15 @@ namespace BLL.Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<UnitModel>> GetAllAsync()
+
+        private async Task<Unit?> GetNotDeletedByAbbreviationAsync(string value)
+        {
+            return await _context.Units
+                .Where(x => x.Abbreviation.Equals(value.Trim()) && !x.IsDeleted)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<UnitModel> AddAsync(UnitModel model)
         {
             throw new NotImplementedException();
         }
@@ -38,7 +48,12 @@ namespace BLL.Services
             throw new NotImplementedException();
         }
 
-        public Task<UnitModel> UpdateAsync(UnitModel model)
+        public async Task<UnitModel> GetByAbbreviationAsync(string value)
+        {
+            return _mapper.Map<UnitModel>(await GetNotDeletedByAbbreviationAsync(value));
+        }
+
+        public bool IsValid(UnitModel model)
         {
             throw new NotImplementedException();
         }
